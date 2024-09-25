@@ -1,0 +1,13 @@
+{% extends "main/index.html" %}
+
+{% block title %}Регистрация{% endblock title %}
+{% block about_page %}Заполните форму{% endblock about_page %}
+{% block text %}
+<form method="post">
+{% csrf_token %}
+{{ form.as_p }}
+<input type="submit" value="Sing up">
+</form>
+{% endblock text %}
+
+{% block list %}{% endblock list %}

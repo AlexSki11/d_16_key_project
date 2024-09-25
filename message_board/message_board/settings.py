@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,6 +26,7 @@ SECRET_KEY = 'django-insecure-lp9+h)@+^vp4*9cvyyeyhfx)amiibjp%ujjvm&)9^mrzrlx)v4
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+env = True
 
 ALLOWED_HOSTS = []
 
@@ -39,7 +41,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'models',
+
+    #allauth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -49,6 +58,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    #allauth middleware
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'message_board.urls'
@@ -64,6 +76,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
             ],
         },
     },
@@ -102,6 +115,21 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+#allauth backends
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+    ]
+
+#allauth settings
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
@@ -114,13 +142,49 @@ USE_I18N = True
 USE_TZ = True
 
 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
-STATICFILES_DIR = [BASE_DIR / 'static']
+STATICFILES_DIRS = [BASE_DIR / 'static']
 
 STATIC_URL = 'static/'
 
+LOGIN_URL = '/accounts/login/'
+
+LOGIN_REDIRECT_URL = '/board/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#email settings
+
+if DEBUG and not env:
+
+    ACCOUNT_EMAIL_VERIFICATION = 'optional'
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    EMAIL_HOST = 'smtp.yandex.ru'
+    EMAIL_PORT = 465
+    EMAIL_HOST_USER = "example@yandex.ru"
+    EMAIL_HOST_PASSWORD = "iliezvcovrxqizez"
+    EMAIL_USE_TLS = False
+    EMAIL_USE_SSL = True
+    DEFAULT_FROM_EMAIL = "example@yandex.ru"
+    EMAIL_SUBJECT_PREFIX = "TEST"
+    
+    ADMINS = os.getenv('ADMINS')
+
+else:
+    load_dotenv()
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+    EMAIL_HOST = 'smtp.yandex.ru'
+    EMAIL_PORT = 465
+    EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+    EMAIL_USE_TLS = False
+    EMAIL_USE_SSL = True
+    DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER')
+    SERVER_EMAIL = os.getenv('EMAIL_HOST_USER')
+    EMAIL_SUBJECT_PREFIX = '[TEST]',
+    ADMINS =  os.getenv('ADMINS')
