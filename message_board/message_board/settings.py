@@ -46,6 +46,10 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    #https://github.com/django-ckeditor/django-ckeditor
+    'ckeditor',
+    'ckeditor_uploader',
+    
 ]
 
 SITE_ID = 1
@@ -76,6 +80,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
 
             ],
         },
@@ -145,9 +150,18 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+PROJECT_DIR=os.path.dirname(__file__)
+STATIC_ROOT= os.path.join(PROJECT_DIR,'static_media/')
+#STATIC_ROOT = [BASE_DIR / 'static_media/'] don't work
+
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
 STATIC_URL = 'static/'
+
+#media
+MEDIA_ROOT = os.path.join(PROJECT_DIR,'media/')
+MEDIA_URL = 'media_url/'
+#auth
 
 LOGIN_URL = '/accounts/login/'
 
@@ -156,6 +170,11 @@ LOGIN_REDIRECT_URL = '/board/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#ckeditor
+
+CKEDITOR_BASEPATH = "/message_board/static_media/ckeditor/ckeditor/"
+CKEDITOR_UPLOAD_PATH = "uploads/"
 
 #email settings
 
