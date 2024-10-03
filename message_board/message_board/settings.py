@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #app
     'models',
 
     #allauth
@@ -134,6 +135,7 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_FORMS = {"signup": "models.forms.CustomSignupForm"}
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
@@ -163,7 +165,7 @@ MEDIA_ROOT = os.path.join(PROJECT_DIR,'media/')
 MEDIA_URL = 'media_url/'
 #auth
 
-LOGIN_URL = '/accounts/login/'
+LOGIN_URL = '/account/login/'
 
 LOGIN_REDIRECT_URL = '/board/'
 # Default primary key field type
