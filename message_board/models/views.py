@@ -27,7 +27,7 @@ class MessageCreate(CreateView):
     template_name = 'message_create.html'
 
 class MessageEdit(UpdateView):
-    form = MessageBoardForm
+    form_class = MessageBoardForm
     model = MessageBoard
     template_name = 'message_create.html'
 

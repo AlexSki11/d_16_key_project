@@ -22,7 +22,7 @@ class MessageBoard(models.Model):
     data_create = models.DateTimeField(auto_now_add=True)
     message_category = models.ManyToManyField(Category, through='MessageCategory')
     
-    content = RichTextField()
+    content = RichTextField(config_name='awesome_ckeditor')
 
     def get_absolute_url(self):
         return reverse("message_detail", kwargs={"pk": self.pk})

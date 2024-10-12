@@ -174,10 +174,19 @@ LOGIN_REDIRECT_URL = '/board/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #ckeditor
-
-CKEDITOR_BASEPATH = "/message_board/static_media/ckeditor/ckeditor/"
+CKEDITOR_BASEPATH = "/my_static/ckeditor/ckeditor/"
 CKEDITOR_UPLOAD_PATH = "uploads/"
-
+CKEDITOR_CONFIGS = {
+    'awesome_ckeditor': {
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            ['Link', 'Unlink'],
+            ['RemoveFormat', 'Source']
+        ]
+    }
+}
 #email settings
 
 if DEBUG and not env:

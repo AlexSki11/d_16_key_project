@@ -8,7 +8,7 @@ from allauth.account.forms import SignupForm
 from .models import UserBoard
 
 class MessageBoardForm(forms.ModelForm):
-    content = forms.CharField(widget=CKEditorWidget)
+    content = forms.CharField(widget=CKEditorWidget(config_name='awesome_ckeditor'))
     class Meta:
         model = MessageBoard
         fields = '__all__'
