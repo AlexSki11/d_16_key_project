@@ -6,6 +6,7 @@ from .models import MessageBoard
 from ckeditor.widgets import CKEditorWidget
 from allauth.account.forms import SignupForm
 from .models import UserBoard
+from django.contrib.auth.models import Group
 
 class MessageBoardForm(forms.ModelForm):
     content = forms.CharField(widget=CKEditorWidget(config_name='awesome_ckeditor'))
@@ -20,5 +21,6 @@ class CustomSignupForm(SignupForm):
     def save(self, request):
         user = super().save(request)
         user_board = UserBoard.objects.create(user=user)
-        
+        group = Group.objects.get(name='users_board')
+        user.groups.add(group)
         return user

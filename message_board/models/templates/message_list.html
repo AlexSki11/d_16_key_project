@@ -3,6 +3,14 @@
 {% block title %}Объявления!{% endblock title %}
 
 {% block content %}
-<p align="right"> <a href="create">Создать</a> </p>
-{{messages}}
+{% if request.user.is_authenticated %}
+<a href="create" align="right">Создать</a>
+{% else %}
+<a href='/account/login' align="right">Войти чтобы создать</a>
+{% endif %}
+
+{% for message in messages %}
+<a href='{{message.pk}}'>{{message}}</a>
+<br />
+{% endfor %}
 {% endblock content %}

@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from ckeditor.fields import RichTextField
 from django.urls import reverse
+from django.shortcuts import render
+#from django.contrib
 
 # Create your models here.
 
@@ -23,6 +25,7 @@ class MessageBoard(models.Model):
     message_category = models.ManyToManyField(Category, through='MessageCategory')
     
     content = RichTextField(config_name='awesome_ckeditor')
+
 
     def get_absolute_url(self):
         return reverse("message_detail", kwargs={"pk": self.pk})

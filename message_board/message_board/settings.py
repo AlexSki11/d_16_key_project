@@ -166,7 +166,6 @@ MEDIA_URL = 'media_url/'
 #auth
 
 LOGIN_URL = '/account/login/'
-
 LOGIN_REDIRECT_URL = '/board/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -174,7 +173,7 @@ LOGIN_REDIRECT_URL = '/board/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #ckeditor
-CKEDITOR_BASEPATH = "/my_static/ckeditor/ckeditor/"
+CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_CONFIGS = {
     'awesome_ckeditor': {

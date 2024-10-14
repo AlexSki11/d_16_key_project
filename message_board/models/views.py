@@ -1,10 +1,14 @@
+from django.db.models.query import QuerySet
 from django.shortcuts import render
 from django.views.generic.edit import (CreateView, UpdateView, DeleteView)
 from django.views.generic import (ListView, DetailView)
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission
 from .forms import MessageBoardForm
-from .models import MessageBoard
+from .models import MessageBoard, UserBoard
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
+
 
 # Create your views here.
 
@@ -21,17 +25,38 @@ class MessageDetail(DetailView):
     template_name = 'message_detail.html'
     context_object_name = 'message'
 
-class MessageCreate(CreateView):
+class MessageCreate(LoginRequiredMixin, CreateView):
     form_class = MessageBoardForm
     model = MessageBoard
     template_name = 'message_create.html'
 
-class MessageEdit(UpdateView):
+class MessageEdit(LoginRequiredMixin, UpdateView):
     form_class = MessageBoardForm
     model = MessageBoard
     template_name = 'message_create.html'
 
-class MessageDelete(DeleteView):
+    def get_queryset(self):
+        queryset = MessageBoard.objects
+        message = self.get_object(queryset)
+        
+        if (message.author != UserBoard.objects.get(user=self.request.user) and not
+            self.request.user.has_perm('models.change_messageboard')) :
+            raise PermissionDenied
+
+        return super().get_queryset()
+        
+
+class MessageDelete(LoginRequiredMixin, DeleteView):
     model = MessageBoard
     template_name = 'message_delete.html'
     success_url = reverse_lazy('message_list')
+
+    def get_queryset(self):
+        queryset = MessageBoard.objects
+        message = self.get_object(queryset)
+        
+        if (message.author != UserBoard.objects.get(user=self.request.user) and not
+            self.request.user.has_perm('models.change_messageboard')) :
+            raise PermissionDenied
+
+        return super().get_queryset()

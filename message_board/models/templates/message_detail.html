@@ -1,7 +1,14 @@
 {%extends 'main/index.html'%}
-
 {% block title %}Объявление{% endblock title %}
 
 {% block content %}
-{{message}}
+{% url "message_edit" message.id as edit_url%} 
+{% url "message_delete" message.id as delete_url%} 
+
+<a align='right' href='{% url "message_list" %}'>Назад</a>
+<a align='right' href='{{edit_url}}'>Редактировать</a>
+<a align='right' href='{{delete_url}}'>Удалить</a>
+
+
+{{message.content|safe}}
 {% endblock content %}
