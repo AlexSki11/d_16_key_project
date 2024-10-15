@@ -4,12 +4,13 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import MessageBoard
 from ckeditor.widgets import CKEditorWidget
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from allauth.account.forms import SignupForm
 from .models import UserBoard
 from django.contrib.auth.models import Group
 
 class MessageBoardForm(forms.ModelForm):
-    content = forms.CharField(widget=CKEditorWidget(config_name='awesome_ckeditor'))
+    content = forms.CharField(widget=CKEditorUploadingWidget(config_name='awesome_ckeditor'))
     class Meta:
         model = MessageBoard
         fields = '__all__'

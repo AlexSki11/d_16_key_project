@@ -2,6 +2,7 @@
 from django.urls import path
 from .views import (MessageCreate, MessageEdit, MessageDelete, MessageList, MessageDetail)
 
+
 urlpatterns = [
     
     path('create/', MessageCreate.as_view(), name='message_create'),

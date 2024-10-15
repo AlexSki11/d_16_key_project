@@ -153,16 +153,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 PROJECT_DIR=os.path.dirname(__file__)
-STATIC_ROOT= os.path.join(PROJECT_DIR,'static_media/')
+
 #STATIC_ROOT = [BASE_DIR / 'static_media/'] don't work
-
+#static
 STATICFILES_DIRS = [BASE_DIR / 'static']
-
+STATIC_ROOT= os.path.join(PROJECT_DIR,'static_media/')
 STATIC_URL = 'static/'
 
 #media
 MEDIA_ROOT = os.path.join(PROJECT_DIR,'media/')
-MEDIA_URL = 'media_url/'
+MEDIA_URL = 'media/'
 #auth
 
 LOGIN_URL = '/account/login/'
@@ -173,17 +173,47 @@ LOGIN_REDIRECT_URL = '/board/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #ckeditor
+from ckeditor.configs import DEFAULT_CONFIG  # noqa
 CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_CONFIGS = {
+    'default':DEFAULT_CONFIG,
     'awesome_ckeditor': {
-        'toolbar': 'Custom',
-        'toolbar_Custom': [
-            ['Bold', 'Italic', 'Underline'],
-            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
-            ['Link', 'Unlink'],
-            ['RemoveFormat', 'Source']
-        ]
+    "skin": "moono-lisa",
+    "toolbar_Basic": [["Source", "-", "Bold", "Italic"]],
+    "toolbar_Full": [
+        [
+            "Styles",
+            "Format",
+            "Bold",
+            "Italic",
+            "Underline",
+            "Strike",
+            "SpellChecker",
+            "Undo",
+            "Redo",
+        ],
+        ["Link", "Unlink", "Anchor"],
+        ["Image", "Html5video", "Flash", "Table", "HorizontalRule"],
+        ["TextColor", "BGColor"],
+        ["Smiley", "SpecialChar"],
+        ["Sourcedialog", ],
+    ],
+    "toolbar": "Full",
+    "height": 291,
+    "width": "100%",
+    "filebrowserWindowWidth": 940,
+    "filebrowserWindowHeight": 725,
+    'extra_plugins':['html5video', 'sourcedialog',],
+    'external_plugin_resources':[(
+        'html5video',
+        '/static/plugins/ckeditor-html5-video-master/html5video/',
+        'plugin.js',
+        ),
+            ],
+    "removePlugins": ['sourcearea', 'iframe'],
+    'extraAllowedContent' : ['iframe[*]']
+
     }
 }
 #email settings

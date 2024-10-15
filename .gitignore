@@ -1,3 +1,4 @@
 .venv/
 message_board/message_board/.env
 message_board/message_board/static_media
+message_board/message_board/media/uploads/
