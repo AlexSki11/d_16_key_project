@@ -1,4 +1,6 @@
 from django.db.models.query import QuerySet
+from django.forms import BaseModelForm
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic.edit import (CreateView, UpdateView, DeleteView)
 from django.views.generic import (ListView, DetailView)
@@ -29,6 +31,15 @@ class MessageCreate(LoginRequiredMixin, CreateView):
     form_class = MessageBoardForm
     model = MessageBoard
     template_name = 'message_create.html'
+    
+    def form_valid(self, form: BaseModelForm) -> HttpResponse:
+        self.object = form.save(commit=False)
+        self.object.author = UserBoard.objects.get(user=self.request.user)
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
+    
+    
+    
 
 class MessageEdit(LoginRequiredMixin, UpdateView):
     form_class = MessageBoardForm
@@ -44,6 +55,7 @@ class MessageEdit(LoginRequiredMixin, UpdateView):
             raise PermissionDenied
 
         return super().get_queryset()
+    
         
 
 class MessageDelete(LoginRequiredMixin, DeleteView):

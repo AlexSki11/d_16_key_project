@@ -1,3 +1,4 @@
+from typing import Any
 from django import forms
 from django.contrib import admin
 from django.contrib.auth.forms import UserCreationForm
@@ -13,7 +14,8 @@ class MessageBoardForm(forms.ModelForm):
     content = forms.CharField(widget=CKEditorUploadingWidget(config_name='awesome_ckeditor'))
     class Meta:
         model = MessageBoard
-        fields = '__all__'
+        fields = ['header','content','message_category']
+
 
 class MessageBoardAdmin(admin.ModelAdmin):
     form = MessageBoardForm
@@ -25,3 +27,6 @@ class CustomSignupForm(SignupForm):
         group = Group.objects.get(name='users_board')
         user.groups.add(group)
         return user
+    
+    class Meta:
+        fields = '__all__'
