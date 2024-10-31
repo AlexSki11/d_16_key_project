@@ -3,7 +3,7 @@ from django import forms
 from django.contrib import admin
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import MessageBoard
+from .models import MessageBoard, Response
 from ckeditor.widgets import CKEditorWidget
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from allauth.account.forms import SignupForm
@@ -15,6 +15,19 @@ class MessageBoardForm(forms.ModelForm):
     class Meta:
         model = MessageBoard
         fields = ['header','content','message_category']
+
+class ResponseForm(forms.ModelForm):
+
+    class Meta:
+        model = Response
+        fields = ['text']
+
+    def clean(self):
+        clean_data = super().clean()
+        
+        return clean_data
+
+
 
 
 class MessageBoardAdmin(admin.ModelAdmin):

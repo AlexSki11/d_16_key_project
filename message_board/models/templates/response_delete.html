@@ -1,0 +1,21 @@
+{% extends "main/index.html" %}
+
+{% block title %}
+Удаление
+{% endblock title %}
+
+{% block content %}
+<h1>Удаление</h1>
+
+<hr>
+
+<form action='' method='post'>
+{% csrf_token %%}
+<p>Удаляем отклик?</p>
+
+<input type='submit' value='Delete' />
+
+</form>
+
+
+{% endblock content %}

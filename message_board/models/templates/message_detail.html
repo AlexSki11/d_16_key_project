@@ -1,4 +1,6 @@
 {%extends 'main/index.html'%}
+{% load custom_tag %}
+
 {% block title %}Объявление{% endblock title %}
 
 {% block content %}
@@ -15,4 +17,18 @@
 {{message.header}}
 <br />
 {{message.content|safe}}
+<br />
+
+{% if message.MessageResponse.all%}
+    {% for response in message.MessageResponse.all %}<!-- https://docs.djangoproject.com/en/5.1/ref/templates/builtins/#for-empty-->
+        {% if response.user.user == request.user %}
+            <h2>Ваш отклик</h2>
+            <a href='{% url "response_edit" response.id %}?id={{message.id}}'><p align='right'>Редактировать</p></a>
+            <a href='{% url "response_delete" response.id %}?id={{message.id}}'><p align='right'>Удалить</p></a>
+            <p>{{response.text}}</p>
+        {% endif %}
+    {% endfor %}
+{% else %}
+    <a href='/board/create_response?id={{message.id}}'><h2>Отправить отклик</h2></a>
+{% endif %}
 {% endblock content %}
