@@ -111,7 +111,6 @@ class ResponseDelete(LoginRequiredMixin, DeleteView):
     def get_success_url(self):
 
         pk = self.request.GET.get('id')
-        print()
         return reverse('message_detail', kwargs={'pk':pk})
     
 
