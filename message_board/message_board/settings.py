@@ -236,7 +236,6 @@ if DEBUG and not env:
     DEFAULT_FROM_EMAIL = "example@yandex.ru"
     EMAIL_SUBJECT_PREFIX = "TEST"
     
-    ADMINS = list((os.getenv('ADMINS')))
 else:
     load_dotenv()
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
