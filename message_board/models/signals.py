@@ -13,4 +13,5 @@ def create_start_category(sender, **kwargs):
                 Category.objects.create(name=category)
         if not Group.objects.filter(name='users_board').exists():
             Group.objects.create(name='users_board')
+            Group.objects.create(name='managers')
            

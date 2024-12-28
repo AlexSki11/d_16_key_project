@@ -62,8 +62,8 @@ class MessageCreate(LoginRequiredMixin, CreateView):
     def form_valid(self, form: BaseModelForm) -> HttpResponse:
         self.object = form.save(commit=False)
         self.object.author = UserBoard.objects.get(user=self.request.user)
-        print(self.object.categories)
         self.object.save()
+        form.save_m2m()
         return HttpResponseRedirect(self.get_success_url())
     
 class MessageEdit(LoginRequiredMixin, UpdateView):

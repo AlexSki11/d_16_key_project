@@ -14,11 +14,12 @@
 {% else %}
 <a href='/account/login' align="right">Войти чтобы создать</a>
 {% endif %}
-{% if messages %}
 <form action="" method="get">
     {{ filterset.form.as_p }}
     <input type="submit" value="Найти" />
 </form>
+
+{% if messages %}
 
 <table>
     <tr>
@@ -30,7 +31,7 @@
 {% for message in messages %}
 <tr>
     <td><a href='{% url "message_detail" message.pk %}'>{{ message }}</a></td>
-    <td>{% for category in message.categories.all %}{{category}}{% endfor %}</td>
+    <td>{% for category in message.categories.all %}{{category}} {% endfor %}</td>
     <td>{{message.author.user.username}}</td>
 </tr>
 
@@ -64,6 +65,5 @@
    <h1>Нет объявлений</h1>
 {% endif %}
 
-{% if user|in_groups:'managers' %}Yes{% endif %}
 
 {% endblock content %}
