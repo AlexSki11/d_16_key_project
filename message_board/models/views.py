@@ -3,7 +3,7 @@ from django.forms import BaseModelForm
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic.edit import (CreateView, UpdateView, DeleteView)
-from django.views.generic import (ListView, DetailView)
+from django.views.generic import (ListView, DetailView, TemplateView)
 from django.contrib.auth.models import User, Permission
 from .forms import MessageBoardForm, ResponseForm
 from .models import MessageBoard, UserBoard, Response
@@ -225,3 +225,6 @@ def send_news(request):
         return HttpResponseRedirect('/board')
     
     return render(request, 'send_news.html')
+
+class StartView(TemplateView):
+    template_name = 'main.html'

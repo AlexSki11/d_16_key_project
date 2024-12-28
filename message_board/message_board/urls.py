@@ -18,11 +18,11 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib.auth.models import Group
 from django.views.decorators.cache import never_cache
 from ckeditor_uploader import views
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required, user_passes_test
+from models.views import StartView
 
 def is_in_groupe(user):
     return user.groups.filter(name='users_board').exists()
@@ -41,6 +41,8 @@ def my_browse(request):
     return views.browse(request)
 
 urlpatterns = [
+    path('', StartView.as_view(), name='start'),
+
     path('admin/', admin.site.urls),
     path('account/', include('allauth.urls'), name='account'),
     path('board/', include('models.urls')),

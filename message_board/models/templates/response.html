@@ -5,6 +5,7 @@
 {% endblock title %}
 
 {% block content %}
+<a align='right' href='{% url "response_list" %}'>Назад</a>
 <form method='post'>
     {% csrf_token %}
     <textarea name='text' style='display:block; width:300px; overflow:scroll' placeholder='Ваш ответ'></textarea>
