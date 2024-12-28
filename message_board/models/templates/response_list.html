@@ -1,0 +1,74 @@
+{% extends "main/index.html" %}
+{% load custom_tag %}
+{% block title %}Отклики{% endblock title %}
+
+{% block content %}
+<form action="" method="get">
+    {{ filterset.form.as_p }}
+    <input type="submit" value="Найти" />
+</form>
+<a align='right' href='{% url "message_list" %}'>Назад</a>
+
+{% if responses %}
+<h1>Отклики на ваши объявления</h1>
+{% for response in responses %}
+{% if response.status %}
+<div>
+
+    <h2>
+    Название: {{response.message.header}} 
+    </h2>
+    <h3>
+        Имя: {{response.user.user.username}}
+    </h3>
+    
+    <p>
+    {{response.text}}
+    </p>
+    <button type='disabled'>Принят</button>
+    <br/>
+
+{% elif response.status != False %}
+<div>
+
+<h2>
+Название: {{response.message.header}} 
+</h2>
+<h3>
+    Имя: {{response.user.user.username}}
+</h3>
+
+<p>
+{{response.text}}
+</p>
+<a href='send_response/?id={{response.id}}&result=accept'><button>Принять</button></a>
+<a href='send_response/?id={{response.id}}&result=deny'><button>Отклонить</button></a>
+<br/>
+{% endif %}
+{% endfor %}
+
+{% if page_obj.has_previous %}
+       <a href="?page=1">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+       {% endif %}
+   {% endif %}
+
+   {# Информация о текущей странице #}
+   {{ page_obj.number }}
+
+   {# Информация о следующих страницах #}
+   {% if page_obj.has_next %}
+       <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+
+   {% else %}
+   <h1>Нет отзывов на ваши объявления</h1>
+{% endif %}
+
+{% endblock content %}

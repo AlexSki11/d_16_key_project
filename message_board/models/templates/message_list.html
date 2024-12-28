@@ -1,16 +1,69 @@
 {%extends 'main/index.html'%}
+{% load custom_filters %}
 
 {% block title %}Объявления!{% endblock title %}
-
+{% load custom_tag %}
 {% block content %}
 {% if request.user.is_authenticated %}
-<a href="create" align="right">Создать</a>
+<a align='right' href='/account/logout/'>Выход</a>
+<a align='right' href='{% url "response_list" %}'>Посмотреть отклики</a>
+<a align='right' href="create" align="right">Создать</a>
+    {% if request.user|in_groups:'managers' %}
+    <a align='right' href={% url "send_news" %}>Отправить новостную рассылку</a>
+    {% endif %}
 {% else %}
 <a href='/account/login' align="right">Войти чтобы создать</a>
 {% endif %}
+{% if messages %}
+<form action="" method="get">
+    {{ filterset.form.as_p }}
+    <input type="submit" value="Найти" />
+</form>
+
+<table>
+    <tr>
+        <td>Название</td>
+        <td>Категория</td>
+        <td>Автор</td>
+    </tr>
 
 {% for message in messages %}
-<a href='{{message.pk}}'>{{message}}</a>
+<tr>
+    <td><a href='{% url "message_detail" message.pk %}'>{{ message }}</a></td>
+    <td>{% for category in message.categories.all %}{{category}}{% endfor %}</td>
+    <td>{{message.author.user.username}}</td>
+</tr>
+
 <br />
 {% endfor %}
+</table>
+<br/>
+
+{% if page_obj.has_previous %}
+       <a href="?{% url_replace page=1 %}">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+       {% endif %}
+   {% endif %}
+
+   
+   {# Информация о текущей странице #}
+   {{ page_obj.number }}
+
+   {# Информация о следующих страницах #}
+   {% if page_obj.has_next %}
+       <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?{% url_replace page=page_obj.paginator.num_pages %}}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+
+   {% else %}
+   <h1>Нет объявлений</h1>
+{% endif %}
+
+{% if user|in_groups:'managers' %}Yes{% endif %}
+
 {% endblock content %}

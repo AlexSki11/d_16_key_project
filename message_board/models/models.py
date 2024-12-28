@@ -23,8 +23,9 @@ class Category(models.Model):
 class MessageBoard(models.Model):
     author = models.ForeignKey(UserBoard,models.CASCADE)
     data_create = models.DateTimeField(auto_now_add=True)
-    message_category = models.ManyToManyField(Category, through='MessageCategory')
+    message_category = models.ManyToManyField(Category, through='MessageCategory', verbose_name='categories', blank=False)
     
+
     header = models.CharField(max_length=64)
     content = RichTextUploadingField(config_name='awesome_ckeditor')
 
@@ -40,10 +41,8 @@ class MessageBoard(models.Model):
     
 
 class MessageCategory(models.Model):
-    message = models.ForeignKey(MessageBoard, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='MessageCategory')
-
-    
+    message = models.ForeignKey(MessageBoard, on_delete=models.CASCADE, related_name='categories')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='messages')
 
     def __str__(self):
         return f'{self.category.name}'
@@ -54,9 +53,11 @@ class Response(models.Model):
 
     user = models.ForeignKey(UserBoard, on_delete=models.CASCADE)
     message = models.ForeignKey(MessageBoard, on_delete=models.CASCADE, related_name='MessageResponse')
+    status = models.BooleanField(blank=True, null=True)
     
+
     def get_absolute_url(self):
-        print(self.message.id)
+        #print(self.message.id)
         return reverse("message_detail", kwargs={'pk':self.message.id})
 
     def __str__(self):

@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    'django_filters',
     #app
     'models',
 
@@ -166,6 +168,8 @@ MEDIA_URL = 'media/'
 
 LOGIN_URL = '/account/login/'
 LOGIN_REDIRECT_URL = '/board/'
+
+LOGOUT_REDIRECT_URL = '/account/login/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
@@ -211,7 +215,9 @@ CKEDITOR_CONFIGS = {
         ),
             ],
     "removePlugins": ['sourcearea', 'iframe'],
-    'extraAllowedContent' : ['iframe[*]']
+    'extraAllowedContent' : ['iframe[*]'],
+
+    
 
     }
 }
@@ -230,8 +236,7 @@ if DEBUG and not env:
     DEFAULT_FROM_EMAIL = "example@yandex.ru"
     EMAIL_SUBJECT_PREFIX = "TEST"
     
-    ADMINS = os.getenv('ADMINS')
-
+    ADMINS = list((os.getenv('ADMINS')))
 else:
     load_dotenv()
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -245,4 +250,4 @@ else:
     DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER')
     SERVER_EMAIL = os.getenv('EMAIL_HOST_USER')
     EMAIL_SUBJECT_PREFIX = '[TEST]',
-    ADMINS =  os.getenv('ADMINS')
+    ADMINS = list(os.getenv('ADMINS'))

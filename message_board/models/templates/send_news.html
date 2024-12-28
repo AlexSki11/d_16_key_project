@@ -1,0 +1,21 @@
+{% extends "main/index.html" %}
+
+{% block title %}
+Новостная рассылка 
+{% endblock title %}
+
+{% block content %}
+<div>
+    <a href='{% url "message_list" %}'>Назад</a>
+    <form method='post'>
+        {% csrf_token %}
+        
+        <input name='subject' type='text' placeholder='Тема' required />
+        <textarea name='text' style='display:block; width:300px; overflow:scroll' placeholder='Новостная рассылка' required></textarea>
+        <button name='action' value='accept'>Отправить новостную рассылку</button>
+
+    </form>
+
+</div>
+
+{% endblock content %}

@@ -1,0 +1,15 @@
+{% extends "main/index.html" %}
+
+{% block title %}
+Ответ
+{% endblock title %}
+
+{% block content %}
+<form method='post'>
+    {% csrf_token %}
+    <textarea name='text' style='display:block; width:300px; overflow:scroll' placeholder='Ваш ответ'></textarea>
+    <button name='action' value='accept'>Отправить ответ</button>
+    
+</form>
+
+{% endblock content %}

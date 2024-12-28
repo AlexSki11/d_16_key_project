@@ -2,3 +2,5 @@
 message_board/message_board/.env
 message_board/message_board/static_media
 message_board/message_board/media/uploads/
+message_board/message_board/.env
+message_board/db.sqlite3

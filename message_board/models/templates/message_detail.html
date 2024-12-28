@@ -1,6 +1,6 @@
 {%extends 'main/index.html'%}
 {% load custom_tag %}
-
+{% load custom_filters %}
 {% block title %}Объявление{% endblock title %}
 
 {% block content %}
@@ -16,19 +16,32 @@
 <h1>User:{{message.author}}</h1>
 {{message.header}}
 <br />
+<h3>
+    Категории:
+</h3>
+
+<ul>
+    {% for category in message.categories.all %}
+    <li>
+        {{category}}
+    </li>
+    
+    {% endfor %}
+</ul>
+<br />
 {{message.content|safe}}
 <br />
 
-{% if message.MessageResponse.all%}
-    {% for response in message.MessageResponse.all %}<!-- https://docs.djangoproject.com/en/5.1/ref/templates/builtins/#for-empty-->
-        {% if response.user.user == request.user %}
-            <h2>Ваш отклик</h2>
-            <a href='{% url "response_edit" response.id %}?id={{message.id}}'><p align='right'>Редактировать</p></a>
-            <a href='{% url "response_delete" response.id %}?id={{message.id}}'><p align='right'>Удалить</p></a>
-            <p>{{response.text}}</p>
-        {% endif %}
+{% if message.MessageResponse.all|get_response:request.user %}
+    {% for response in message.MessageResponse.all|get_response:request.user %}<!-- https://docs.djangoproject.com/en/5.1/ref/templates/builtins/#for-empty-->
+        <h2>Ваш отклик</h2>
+        <a href='{% url "response_edit" response.id %}?id={{message.id}}'><p align='right'>Редактировать</p></a>
+        <a href='{% url "response_delete" response.id %}?id={{message.id}}'><p align='right'>Удалить</p></a>
+        <p>{{response.text}}</p>
     {% endfor %}
-{% else %}
+{% elif message.author.user != request.user %}
     <a href='/board/create_response?id={{message.id}}'><h2>Отправить отклик</h2></a>
 {% endif %}
+
+
 {% endblock content %}
