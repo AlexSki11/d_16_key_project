@@ -6,6 +6,10 @@ register = template.Library()
 
 @register.filter()
 def get_response(objects, user=None):
+
+    if isinstance(user, AnonymousUser):
+        return None
+    
     obj = objects.filter(user__user=user)
 
     if obj:
